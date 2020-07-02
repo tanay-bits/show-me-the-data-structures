@@ -1,3 +1,4 @@
+
 class Group(object):
     def __init__(self, _name):
         self.name = _name
@@ -19,7 +20,6 @@ class Group(object):
     def get_name(self):
         return self.name
 
-
 def is_user_in_group(user, group):
     """
     Return True if user is in the group, False otherwise.
@@ -38,7 +38,8 @@ def is_user_in_group(user, group):
     return False
 
 
-# Test example
+# Test 1
+print("Test 1\n")
 parent = Group("parent")
 child = Group("child")
 sub_child = Group("subchild")
@@ -46,16 +47,35 @@ sub_child = Group("subchild")
 sub_child_user = "sub_child_user"
 sub_child.add_user(sub_child_user)
 
-parent_user = "parent_user"
-parent.add_user(parent_user)
-
 child.add_group(sub_child)
 parent.add_group(child)
 
 print(is_user_in_group(sub_child_user, sub_child))
+# True
 print(is_user_in_group(sub_child_user, child))
+# True
 print(is_user_in_group(sub_child_user, parent))
+# True
+
+# Test 2
+print("\nTest 2\n")
+parent_user = "parent_user"
+parent.add_user(parent_user)
 
 print(is_user_in_group(parent_user, sub_child))
+# False
 print(is_user_in_group(parent_user, child))
+# False
 print(is_user_in_group(parent_user, parent))
+# True
+
+# Test 3
+print("\nTest 3\n")
+vagrant_user = "vagrant_user"
+
+print(is_user_in_group(vagrant_user, sub_child))
+# False
+print(is_user_in_group(vagrant_user, child))
+# False
+print(is_user_in_group(vagrant_user, parent))
+# False

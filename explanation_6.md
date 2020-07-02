@@ -1,0 +1,3 @@
+To create the union linked list, we use a set to add each unique element from input list 1 to the output list. Set membership check takes O(1) time. Then we add unique elements from input list 2 which are neither in the first nor second set, to our output list. Each time we append a new node to our output list, we have to traverse the entire linked list starting from its head. Hence the overall time complexity is **O(n^2)**.
+
+Creating the intersection linked list is similar, except we only add elements to the output list when we're iterating over the second input list and we encounter an element we have seen before in the first input list and not seen before in the second input list. Ignoring O(1) set membership checks, this function again takes **O(n^2)** time.

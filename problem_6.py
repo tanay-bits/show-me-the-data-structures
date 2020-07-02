@@ -7,7 +7,6 @@ class Node:
     def __repr__(self):
         return str(self.value)
 
-
 class LinkedList:
     def __init__(self):
         self.head = None
@@ -80,8 +79,8 @@ def intersection(llist_1, llist_2):
 
     return intersection_list
 
-# Test case 1
-
+# Test 1
+print("Test 1\n")
 linked_list_1 = LinkedList()
 linked_list_2 = LinkedList()
 
@@ -94,22 +93,45 @@ for i in element_1:
 for i in element_2:
     linked_list_2.append(i)
 
-print (union(linked_list_1,linked_list_2))
-print (intersection(linked_list_1,linked_list_2))
+print(union(linked_list_1, linked_list_2))
+# 3 -> 2 -> 4 -> 35 -> 6 -> 65 -> 21 -> 32 -> 9 -> 1 -> 11 ->
+print(intersection(linked_list_1, linked_list_2))
+# 6 -> 4 -> 21 ->
 
-# Test case 2
-
-linked_list_3 = LinkedList()
-linked_list_4 = LinkedList()
+# Test 2
+print("\nTest 2\n")
+linked_list_1 = LinkedList()
+linked_list_2 = LinkedList()
 
 element_1 = [3,2,4,35,6,65,6,4,3,23]
 element_2 = [1,7,8,9,11,21,1]
 
 for i in element_1:
-    linked_list_3.append(i)
+    linked_list_1.append(i)
 
 for i in element_2:
-    linked_list_4.append(i)
+    linked_list_2.append(i)
 
-print (union(linked_list_3,linked_list_4))
-print (intersection(linked_list_3,linked_list_4))
+print(union(linked_list_1, linked_list_2))
+# 3 -> 2 -> 4 -> 35 -> 6 -> 65 -> 23 -> 1 -> 7 -> 8 -> 9 -> 11 -> 21 ->
+print(intersection(linked_list_1, linked_list_2))
+# <empty>, since the intersection of these sets contains no element
+
+# Test 3
+print("\nTest 3\n")
+linked_list_1 = LinkedList()
+linked_list_2 = LinkedList()
+
+element_1 = []
+element_2 = [1,7,8,9,11,21,1]
+
+for i in element_1:
+    linked_list_1.append(i)
+
+for i in element_2:
+    linked_list_2.append(i)
+
+print(union(linked_list_1, linked_list_2))
+# 1 -> 7 -> 8 -> 9 -> 11 -> 21 ->
+print(intersection(linked_list_1, linked_list_2))
+# <empty>, since the intersection of these sets contains no element

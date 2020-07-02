@@ -32,9 +32,14 @@ class LinkedList(object):
 
     def pop_left(self):
         out = self.head
-        self.head = self.head.next
-        self.head.prev = None
-        self.size -= 1
+        if self.size <= 1:
+            self.head = None
+            self.tail = None
+            self.size = 0
+        else:
+            self.head = self.head.next
+            self.head.prev = None
+            self.size -= 1
         return out
 
     def move_to_right_end(self, node):
@@ -118,6 +123,7 @@ our_cache.set('', 69)
 our_cache.get('a')
 # -1
 our_cache.get('')
+# 69
 
 # Test 3
 print("\nTest 3\n")
