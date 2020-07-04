@@ -11,28 +11,59 @@ class Node(object):
     def is_leaf(self):
         return (self.left is None and self.right is None)
 
-
-class PriorityQueue(object):
+class MinHeapPQ(object):
     def __init__(self):
-        self.q = []
+        self.array = []
 
     def size(self):
-        return len(self.q)
+        return len(self.array)
+
+    def parent_idx(self, idx):
+        if idx % 2 == 0:
+            return int(idx / 2) - 1
+        else:
+            return int(idx / 2)
+
+    def left_child_idx(self, idx):
+        return 2 * idx + 1
+
+    def right_child_idx(self, idx):
+        return 2 * idx + 2
+
+    def swim_up(self, cur_idx, parent_idx):
+        if cur_idx == 0:
+            return
+        if self.array[cur_idx].freq < self.array[parent_idx].freq:
+            self.array[cur_idx], self.array[parent_idx] = self.array[parent_idx], self.array[cur_idx]
+            cur_idx = parent_idx
+            self.swim_up(cur_idx, self.parent_idx(cur_idx))
+
+    def sink_down(self, cur_idx, left_child_idx, right_child_idx):
+        if left_child_idx >= len(self.array):
+            return
+        if right_child_idx >= len(self.array):
+            smaller_child_idx = left_child_idx
+        else:
+            smaller_child_idx = left_child_idx if self.array[left_child_idx].freq < self.array[right_child_idx].freq else \
+                right_child_idx
+        if self.array[cur_idx].freq > self.array[smaller_child_idx].freq:
+            self.array[cur_idx], self.array[smaller_child_idx] = self.array[smaller_child_idx], self.array[cur_idx]
+            cur_idx = smaller_child_idx
+            self.sink_down(cur_idx, self.left_child_idx(cur_idx), self.right_child_idx(cur_idx))
+
+    def insert(self, item):
+        self.array.append(item)
+        cur_idx =  len(self.array) - 1
+        self.swim_up(cur_idx, self.parent_idx(cur_idx))
 
     def pop(self):
-        if self.size() == 0:
+        if len(self.array) == 0:
             return None
-        return self.q.pop(0)
-
-    def insert(self, node):
-        self.q.append(node)
-        self.q.sort(key=lambda node: node.freq)
-
-    def __repr__(self):
-        char_freq_tuples = []
-        for node in self.q:
-            char_freq_tuples.append((node.char, node.freq))
-        return f"PQ is {char_freq_tuples}"
+        out = self.array[0]
+        self.array[0] = self.array[-1]
+        self.array.pop()
+        self.sink_down(0, self.left_child_idx(0), self.right_child_idx(0))
+        return out
 
 def find_frequencies(data):
     char_to_freq = {}
@@ -45,7 +76,7 @@ def find_frequencies(data):
 
 def create_huffman_tree(pq):
     if pq.size() == 1:
-        return pq.q[0]
+        return pq.pop()
 
     first = pq.pop()
     second = pq.pop()
@@ -90,11 +121,10 @@ def huffman_encoding(data):
     char_to_freq = find_frequencies(data)
 
     # Create a priority queue from the map, sorted from lowest to highest frequency characters
-    pq = PriorityQueue()
+    pq = MinHeapPQ()
     for char in char_to_freq:
         node = Node(char, char_to_freq[char])
-        pq.q.append(node)
-    pq.q.sort(key=lambda node: node.freq)
+        pq.insert(node)
 
     # Create Huffman Tree from the priority queue
     ht_root = create_huffman_tree(pq)
@@ -140,7 +170,7 @@ if __name__ == "__main__":
     print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
     # The size of the encoded data is: 36
     print ("The content of the encoded data is: {}\n".format(encoded_data))
-    # The content of the encoded data is: 0110111011111100111000001010110000100011010011110111111010101011001010
+    # The content of the encoded data is: 0100011100111101100000111001110001101111111010011100111101001010011100
 
     decoded_data = huffman_decoding(encoded_data, tree)
 
